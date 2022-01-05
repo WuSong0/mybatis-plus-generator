@@ -1,0 +1,87 @@
+package ${package.Controller};
+
+import org.springframework.web.bind.annotation.RequestMapping;
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+## 生成RequestMapping去除末尾entity名称
+#set($controllerMappingHy=${controllerMappingHyphen})
+#set($excludeEnd=$controllerMappingHy.length() - 7)
+#set($controllerMapping=$controllerMappingHy.substring(0,$excludeEnd))
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMapping}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+    ## service开头小写，entity开头小写
+    #set($serviceImplName = ${table.serviceImplName})
+    #set($entityName = ${table.entityName})
+    #set($serviceImplLowName = $serviceImplName.substring(0,1).toLowerCase() + $serviceImplName.substring(1))
+    #set($entityLowName = $entityName.substring(0,1).toLowerCase() + $entityName.substring(1))
+
+    @Autowired
+    private ${table.serviceImplName} ${serviceImplLowName};
+
+    @GetMapping
+    public R pageAll(@RequestParam Map<String,Object> params){
+        PageEntity pageEntity = ${serviceImplLowName}.selectPageByMap(params);
+        return R.ok(pageEntity);
+
+    }
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public R list(@RequestParam Map<String,Object> params){
+        List list = ${serviceImplLowName}.selectByMap(params);
+        return R.ok(list);
+
+    }
+
+    @RequestMapping(value = "/getById/{id}",method = RequestMethod.GET)
+    public R selectById(@PathVariable Serializable id){
+
+        return R.ok(${serviceImplLowName}.getById(id));
+    }
+
+    @PostMapping
+    public R save(@RequestBody ${table.entityName} ${entityLowName}){
+
+        return R.ok(${serviceImplLowName}.save(${entityLowName}));
+    }
+
+    @PutMapping
+    public R update(@RequestBody ${table.entityName} ${entityLowName}){
+
+        return R.ok(${serviceImplLowName}.updateById(${entityLowName}));
+    }
+
+    @DeleteMapping
+    public R deleteAll(@RequestBody List<? extends Serializable> ids){
+
+        return R.ok(${serviceImplLowName}.removeByIds(ids));
+    }
+}
+#end

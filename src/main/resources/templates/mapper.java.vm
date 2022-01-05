@@ -1,0 +1,31 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+import ${superMapperClassPackage};
+#if(${mapperAnnotation})
+import org.apache.ibatis.annotations.Mapper;
+#end
+import java.util.List;
+import java.util.Map;
+/**
+ * <p>
+ * $!{table.comment} Mapper 接口
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${mapperAnnotation})
+@Mapper
+#end
+#if(${kotlin})
+interface ${table.mapperName} : ${superMapperClass}<${entity}>
+#else
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+
+    List selectPageByMap(Map<String,Object> paramsMap);
+
+    List selectByMap(Map<String,Object> paramsMap);
+
+}
+#end
