@@ -96,9 +96,9 @@ html {
 }
 
 .panel-submit-btn {
-    /*margin-top: 6rem;*/
+    margin-top: 6rem;
     position: absolute;
-    bottom: 1rem;
+    bottom: -50px;
 }
 
 .footer {

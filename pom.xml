@@ -36,6 +36,7 @@
         <beetl.version>3.8.1.RELEASE</beetl.version>
         <junit.version>4.13.2</junit.version>
         <api-starter.version>1.1.0</api-starter.version>
+        <commons.io.version>2.5</commons.io.version>
     </properties>
 
     <dependencies>
@@ -130,6 +131,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
         </dependency>
     </dependencies>
 

@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ import java.util.List;
 public class IndexServiceImpl implements IIndexService {
 
     @Override
-    public ResponseTemplate<Void> codeGenerator(CodeGeneratorRequestVo requestVo) {
+    public ResponseTemplate<Void> codeGenerator(CodeGeneratorRequestVo requestVo, HttpServletResponse response) {
 
         CodeGeneratorBo bo = new CodeGeneratorBo();
 
@@ -37,6 +38,7 @@ public class IndexServiceImpl implements IIndexService {
         return execute(bo);
 
     }
+
 
     private ResponseTemplate<Void> execute(CodeGeneratorBo bo) {
         try {
@@ -59,7 +61,7 @@ public class IndexServiceImpl implements IIndexService {
         if (!StringUtils.hasText(requestVo.getDbTypeName())
                 || DbType.getDbType(requestVo.getDbTypeName()) == DbType.MYSQL) {
             // mysql
-            dbUrl = "jdbc:mysql://" + requestVo.getHost() + "/" + requestVo.getDbName();
+            dbUrl = "jdbc:mysql://" + requestVo.getHost() + "/" + requestVo.getDbName()+"?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&autoReconnectForPools=true&useSSL=false&serverTimezone=Asia/Shanghai";
             driver = "com.mysql.cj.jdbc.Driver";
         } else if (DbType.getDbType(requestVo.getDbTypeName()) == DbType.ORACLE) {
             dbUrl = "jdbc:oracle:thin:@" + requestVo.getHost() + ":" + requestVo.getDbName();

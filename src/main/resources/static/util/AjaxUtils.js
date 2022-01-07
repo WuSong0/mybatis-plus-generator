@@ -3,6 +3,7 @@ function ajaxPost(jQuery, layer, url, data,  funcSuc) {
     jQuery.ajax({
         url: url,
         type: HTTP_POST,
+        responseType:'blob',
         // 请求的媒体类型
         contentType: "application/json;charset=UTF-8",
         data: data,
