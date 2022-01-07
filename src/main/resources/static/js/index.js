@@ -49,6 +49,7 @@ layui.use(function() {
 
         layerIndex = layer.load(0, { shade: 0.1 });
         xhr.onload = function () {
+            handleCache(data.field);
             layer.close(layerIndex);
             if (xhr.getResponseHeader("Content-type") === 'application/octet-stream;charset=UTF-8') {
                 let url = window.URL.createObjectURL(xhr.response);
